@@ -50,7 +50,7 @@ docs/                      pendências, fontes da FAQ, sugestões de texto e cap
 
 ## Maquete 3D (Residencial 04)
 
-`assets/3d/residencial-04.glb` é gerado por `node scripts/gerar-maquete.mjs`. O visualizador (`assets/3d/model-viewer.min.js`, @google/model-viewer 4.1.0) e o modelo só carregam quando o visitante clica em "Explorar em 3D". Para usar o modelo original do projeto, exporte em GLB, salve no mesmo caminho e rode `node scripts/versionar-assets.mjs`.
+`assets/3d/residencial-04.glb` e `assets/3d/estudio.png` são gerados por `node scripts/gerar-maquete.mjs` e otimizados com `npx @gltf-transform/cli optimize assets/3d/residencial-04-bruto.glb assets/3d/residencial-04.glb --texture-compress webp --texture-size 512` (depois apague o `-bruto.glb`). O visualizador (`assets/3d/model-viewer.min.js`, @google/model-viewer 4.1.0) e o modelo só carregam quando o visitante clica em "Explorar em 3D". Para usar o modelo original do projeto, exporte em GLB, salve no mesmo caminho e rode `node scripts/versionar-assets.mjs`.
 
 ## Ao definir o domínio
 

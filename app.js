@@ -385,23 +385,42 @@
         mv.setAttribute("src", maquete.dataset.src);
         mv.setAttribute("alt", "Maquete 3D do Residencial 04: casa térrea com marquise branca sobre a garagem, pilar e bloco de pedra, porta clara e volume alto à direita com faixas de vidro");
         mv.setAttribute("camera-controls", "");
-        mv.setAttribute("camera-orbit", "0deg 80deg " + (maquete.offsetWidth < 640 ? "40m" : "30m"));
-        mv.setAttribute("min-camera-orbit", "auto 20deg 18m");
-        mv.setAttribute("max-camera-orbit", "auto 88deg 60m");
-        mv.setAttribute("field-of-view", "30deg");
-        mv.setAttribute("exposure", "0.8");
+        // 3/4 frontal, parecido com a perspectiva do site; zoom limitado
+        mv.setAttribute("camera-orbit", "-25deg 74deg " + (maquete.offsetWidth < 640 ? "44m" : "32m"));
+        mv.setAttribute("camera-target", "0.5m 1.3m -1.5m");
+        mv.setAttribute("min-camera-orbit", "auto 25deg 14m");
+        mv.setAttribute("max-camera-orbit", "auto 86deg 55m");
+        mv.setAttribute("field-of-view", "28deg");
+        mv.setAttribute("exposure", "0.9");
         mv.setAttribute("shadow-intensity", "1");
         mv.setAttribute("shadow-softness", "0.8");
-        mv.setAttribute("environment-image", "neutral");
+        mv.setAttribute("tone-mapping", "neutral");
+        // ambiente de estúdio próprio (sem CDN)
+        mv.setAttribute("environment-image", maquete.dataset.env);
         mv.setAttribute("interaction-prompt", "none");
         mv.setAttribute("tabindex", "0");
         mv.setAttribute("ar", "");
         mv.setAttribute("ar-modes", "webxr scene-viewer quick-look");
         mv.setAttribute("ar-scale", "fixed");
+        // giro lento de ~3 s para chamar atenção (desligado com movimento reduzido)
         if (!reducedMotion) {
           mv.setAttribute("auto-rotate", "");
-          mv.setAttribute("auto-rotate-delay", "3000");
+          mv.setAttribute("auto-rotate-delay", "0");
+          mv.setAttribute("rotation-per-second", "8deg");
         }
+        // rótulos só para o que a página já descreve
+        [
+          ["hotspot-garagem", "-3.2m 1.6m 1.8m", "0m 0m 1m", "Garagem coberta"],
+          ["hotspot-muro", "7.5m 1m -6m", "1m 0m 0m", "Área externa com muro"],
+        ].forEach(function (h) {
+          var hs = document.createElement("div");
+          hs.slot = h[0];
+          hs.className = "maquete__hotspot";
+          hs.setAttribute("data-position", h[1]);
+          hs.setAttribute("data-normal", h[2]);
+          hs.textContent = h[3];
+          mv.appendChild(hs);
+        });
         var ar = document.createElement("button");
         ar.slot = "ar-button";
         ar.type = "button";
@@ -409,6 +428,11 @@
         ar.textContent = "Ver no seu terreno";
         mv.appendChild(ar);
         mv.addEventListener("load", function () {
+          if (!reducedMotion) {
+            setTimeout(function () {
+              mv.removeAttribute("auto-rotate");
+            }, 3000);
+          }
           status.textContent = "";
           poster.hidden = true;
           cta.hidden = true;

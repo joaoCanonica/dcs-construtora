@@ -5,7 +5,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { ROOT, listarHtml, rel } from "./lib.mjs";
 
-export const ASSETS = ["style.css", "app.js", "assets/3d/residencial-04.glb", "assets/3d/model-viewer.min.js"];
+export const ASSETS = ["style.css", "app.js", "assets/3d/residencial-04.glb", "assets/3d/model-viewer.min.js", "assets/3d/estudio.png"];
 
 export function hashDe(arquivo) {
   return crypto.createHash("sha1").update(fs.readFileSync(path.join(ROOT, arquivo))).digest("hex").slice(0, 8);
