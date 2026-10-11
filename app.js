@@ -350,6 +350,89 @@
     });
   }
 
+  /* Maquete 3D: o visualizador e o modelo só carregam no clique */
+  var maquete = document.querySelector("[data-maquete]");
+  if (maquete) {
+    var abrir = maquete.querySelector("[data-maquete-abrir]");
+    var poster = maquete.querySelector(".maquete__poster");
+    var cta = maquete.querySelector(".maquete__cta");
+    var status = maquete.querySelector(".maquete__status");
+    var dica = document.querySelector(".maquete__dica");
+    var conn = navigator.connection;
+    if (conn && conn.saveData) maquete.querySelector(".maquete__aviso").hidden = false;
+
+    var fechar = function () {
+      var mv = maquete.querySelector("model-viewer");
+      if (mv) mv.remove();
+      var fb = maquete.querySelector(".maquete__fechar");
+      if (fb) fb.remove();
+      poster.hidden = false;
+      cta.hidden = false;
+      dica.hidden = true;
+      status.textContent = "";
+      abrir.focus();
+    };
+
+    abrir.addEventListener("click", function () {
+      abrir.disabled = true;
+      status.textContent = "Carregando a maquete…";
+      var script = document.createElement("script");
+      script.type = "module";
+      script.src = maquete.dataset.viewer;
+      document.head.appendChild(script);
+      customElements.whenDefined("model-viewer").then(function () {
+        var mv = document.createElement("model-viewer");
+        mv.setAttribute("src", maquete.dataset.src);
+        mv.setAttribute("alt", "Maquete 3D do Residencial 04: casa térrea com marquise branca sobre a garagem, pilar e bloco de pedra, porta clara e volume alto à direita com faixas de vidro");
+        mv.setAttribute("camera-controls", "");
+        mv.setAttribute("camera-orbit", "0deg 80deg " + (maquete.offsetWidth < 640 ? "40m" : "30m"));
+        mv.setAttribute("min-camera-orbit", "auto 20deg 18m");
+        mv.setAttribute("max-camera-orbit", "auto 88deg 60m");
+        mv.setAttribute("field-of-view", "30deg");
+        mv.setAttribute("exposure", "0.8");
+        mv.setAttribute("shadow-intensity", "1");
+        mv.setAttribute("shadow-softness", "0.8");
+        mv.setAttribute("environment-image", "neutral");
+        mv.setAttribute("interaction-prompt", "none");
+        mv.setAttribute("tabindex", "0");
+        mv.setAttribute("ar", "");
+        mv.setAttribute("ar-modes", "webxr scene-viewer quick-look");
+        mv.setAttribute("ar-scale", "fixed");
+        if (!reducedMotion) {
+          mv.setAttribute("auto-rotate", "");
+          mv.setAttribute("auto-rotate-delay", "3000");
+        }
+        var ar = document.createElement("button");
+        ar.slot = "ar-button";
+        ar.type = "button";
+        ar.className = "btn btn--light maquete__ar";
+        ar.textContent = "Ver no seu terreno";
+        mv.appendChild(ar);
+        mv.addEventListener("load", function () {
+          status.textContent = "";
+          poster.hidden = true;
+          cta.hidden = true;
+          dica.hidden = false;
+          abrir.disabled = false;
+          var fb = document.createElement("button");
+          fb.type = "button";
+          fb.className = "btn btn--light maquete__fechar";
+          fb.textContent = "Fechar 3D";
+          fb.addEventListener("click", fechar);
+          maquete.appendChild(fb);
+          requestAnimationFrame(function () {
+            mv.focus();
+          });
+        });
+        mv.addEventListener("error", function () {
+          status.textContent = "Não foi possível carregar a maquete.";
+          abrir.disabled = false;
+        });
+        maquete.insertBefore(mv, poster);
+      });
+    });
+  }
+
   /* Ao voltar pelo histórico, fecha menu e lightbox */
   window.addEventListener("pageshow", function () {
     setMenu(false);
