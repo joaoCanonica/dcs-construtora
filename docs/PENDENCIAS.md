@@ -11,6 +11,7 @@ Nada desta lista vai para o HTML até a informação chegar, confirmada por escr
 - [ ] **Fotos reais das obras.** Hoje só o Residencial 03 é fotografia; os demais são perspectivas de projeto. Para SEO local e confiança, fotos de obra valem muito.
 - [ ] **Autorização da M9 Arquitetura** para continuar usando as imagens dos Residenciais 02, 06 e 07, com crédito.
 - [ ] **Arquivo 3D original** do Residencial 04 (SketchUp, Revit, Archicad, Lumion ou Blender), em `_originais/3d/`. Dos outros projetos também, se quiserem mais modelos.
+- [ ] **Confirmar o pino do mapa** em `/contato/` no site publicado: depois de clicar em "Ver o escritório no mapa", o pino deve cair na Rua Humberto de Campos, 213 (o ambiente de teste não alcança o Google; o layout foi testado com uma resposta simulada).
 - [ ] **Depoimentos de clientes:** não adicionar até haver autorização por escrito de cada cliente.
 
 ## Itens levantados na FAQ que precisariam de confirmação
