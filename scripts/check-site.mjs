@@ -100,7 +100,8 @@ for (const arq of paginas) {
 
   // versões de CSS/JS
   for (const [a, h] of Object.entries(hashes)) {
-    const refs = [...html.matchAll(new RegExp(`${a.replace(".", "\\.")}(\\?v=([^"']*))?["']`, "g"))];
+    const semLd = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, "");
+    const refs = [...semLd.matchAll(new RegExp(`${a.replace(".", "\\.")}(\\?v=([^"']*))?["']`, "g"))];
     if (!refs.length) continue;
     for (const ref of refs) if (ref[2] !== h) falha(r, `${a}?v= ausente ou desatualizado (${ref[2] || "sem v"} ≠ ${h}). Rode: node scripts/versionar-assets.mjs`);
   }
