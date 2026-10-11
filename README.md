@@ -37,6 +37,8 @@ docs/                      pendências, fontes da FAQ, sugestões de texto e cap
 
 `node scripts/versionar-assets.mjs` (atualiza o `?v=` de `style.css` e `app.js` em todas as páginas) e `node scripts/check-site.mjs` (confere SEO, links, imagens, JSON-LD, FAQ, sitemap, versões e contraste).
 
+Para testar layout e interação no navegador (mapa, carrossel, alvos de toque, WhatsApp flutuante, lightbox): `node scripts/qa-layout.mjs` (usa o Playwright instalado fora do repositório).
+
 ## Editar
 
 - **Telefone/WhatsApp, endereço e horário** aparecem no cabeçalho, no rodapé e no contato de todas as páginas. Para trocar, use "Localizar e substituir em arquivos" do VS Code (Ctrl+Shift+H), por exemplo em `5549991277677`.

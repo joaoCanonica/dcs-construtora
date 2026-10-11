@@ -114,6 +114,7 @@
   /* Slideshow do topo */
   var slideshow = document.querySelector(".slideshow");
   if (slideshow) {
+    var frame = slideshow.querySelector(".slideshow__frame");
     var slides = slideshow.querySelectorAll(".slide");
     var dots = slideshow.querySelectorAll(".slideshow__dots button");
     var caption = slideshow.querySelector(".slideshow__caption");
@@ -121,8 +122,18 @@
     var current = 0;
     var timer = null;
     var duration = 6000;
+    // pausa manual (botão); com movimento reduzido já nasce pausado
+    var userPaused = reducedMotion;
+    // pausa enquanto o foco do teclado está dentro do carrossel
+    var focusPaused = false;
 
     slideshow.style.setProperty("--slide-time", duration + "ms");
+
+    // garante que a imagem de um slide já esteja baixada antes de aparecer
+    var preload = function (index) {
+      var img = slides[(index + slides.length) % slides.length].querySelector("img");
+      if (img && img.loading === "lazy") img.loading = "eager";
+    };
 
     var show = function (index) {
       slides[current].classList.remove("is-active");
@@ -135,24 +146,31 @@
       dots[current].setAttribute("aria-current", "true");
       captionText.textContent = slide.dataset.caption;
       caption.setAttribute("href", slide.dataset.href);
+      preload(current + 1);
     };
 
-    var play = function () {
-      if (userPaused) return;
+    var running = function () {
+      return !userPaused && !focusPaused && !document.hidden;
+    };
+
+    // (re)inicia o contador: a próxima troca automática só acontece depois de 6 s
+    var restart = function () {
       clearInterval(timer);
-      timer = setInterval(function () {
-        show(current + 1);
-      }, duration);
-      slideshow.classList.remove("is-paused");
+      timer = null;
+      if (running()) {
+        timer = setInterval(function () {
+          show(current + 1);
+        }, duration);
+      }
+      slideshow.classList.toggle("is-paused", !running());
     };
 
-    var pause = function () {
-      clearInterval(timer);
-      slideshow.classList.add("is-paused");
+    var go = function (index) {
+      show(index);
+      restart();
     };
 
-    // botão Pausar/Reproduzir (WCAG 2.2.2); pausa manual vale até o visitante reproduzir de novo
-    var userPaused = reducedMotion;
+    // botão Pausar/Reproduzir (WCAG 2.2.2)
     var ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
     var ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>';
     var toggleBtn = document.createElement("button");
@@ -163,37 +181,91 @@
       toggleBtn.setAttribute("aria-label", userPaused ? "Reproduzir carrossel" : "Pausar carrossel");
     };
     syncToggle();
-    slideshow.querySelector(".slideshow__frame").appendChild(toggleBtn);
+    frame.appendChild(toggleBtn);
     toggleBtn.addEventListener("click", function () {
       userPaused = !userPaused;
+      // quem clica em Reproduzir quer ver a rotação, mesmo com o foco no botão
+      focusPaused = false;
       syncToggle();
-      if (userPaused) pause();
-      else play();
+      restart();
     });
-    var resume = function () {
-      if (!userPaused) play();
-    };
+
+    // setas anterior/próxima
+    var ARROW = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>';
+    var ARROW_BACK = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4M10 6l-6 6 6 6"/></svg>';
+    [["prev", "Imagem anterior", ARROW_BACK, -1], ["next", "Próxima imagem", ARROW, 1]].forEach(function (cfg) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "slideshow__arrow slideshow__arrow--" + cfg[0];
+      btn.setAttribute("aria-label", cfg[1]);
+      btn.innerHTML = cfg[2];
+      btn.addEventListener("click", function () {
+        go(current + cfg[3]);
+      });
+      frame.appendChild(btn);
+    });
 
     dots.forEach(function (dot, i) {
       dot.addEventListener("click", function () {
-        show(i);
-        resume();
+        go(i);
       });
     });
 
-    slideshow.addEventListener("mouseenter", pause);
-    slideshow.addEventListener("mouseleave", resume);
-    slideshow.addEventListener("focusin", pause);
-    slideshow.addEventListener("focusout", function (e) {
-      if (!slideshow.contains(e.relatedTarget)) resume();
-    });
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) pause();
-      else resume();
+    // teclado: ← e → quando o foco está no carrossel
+    slideshow.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(current - 1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(current + 1);
+      }
     });
 
-    if (reducedMotion) slideshow.classList.add("is-paused");
-    resume();
+    // deslizar no celular (a rolagem vertical continua livre: touch-action: pan-y)
+    var startX = null;
+    var startY = null;
+    frame.addEventListener(
+      "touchstart",
+      function (e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+    frame.addEventListener("touchend", function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+
+    // pausa só pelo foco (não pelo mouse) e pelo botão
+    slideshow.addEventListener("focusin", function (e) {
+      // só o foco do teclado pausa; o clique do mouse numa seta não
+      if (e.target === toggleBtn || !e.target.matches(":focus-visible")) return;
+      focusPaused = true;
+      restart();
+    });
+    slideshow.addEventListener("focusout", function (e) {
+      if (slideshow.contains(e.relatedTarget)) return;
+      focusPaused = false;
+      restart();
+    });
+    document.addEventListener("visibilitychange", restart);
+
+    // pré-carrega os demais slides quando a página estiver ociosa
+    var idle = window.requestIdleCallback || function (fn) {
+      setTimeout(fn, 1500);
+    };
+    window.addEventListener("load", function () {
+      idle(function () {
+        for (var i = 1; i < slides.length; i++) preload(i);
+      });
+    });
+
+    restart();
   }
 
   /* Filtros do portfólio */
@@ -344,7 +416,8 @@
       iframe.src = mapButton.dataset.loadMap;
       iframe.title = "Mapa: escritório da DCS em Lages, SC";
       iframe.loading = "lazy";
-      iframe.referrerPolicy = "no-referrer-when-downgrade";
+      iframe.setAttribute("allow", "fullscreen");
+      iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
       holder.innerHTML = "";
       holder.appendChild(iframe);
     });
