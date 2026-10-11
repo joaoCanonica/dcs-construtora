@@ -57,6 +57,22 @@ function checarContraste(cssPath) {
 const cssArg = process.argv.indexOf("--css");
 const relContraste = checarContraste(cssArg > -1 ? path.resolve(process.argv[cssArg + 1]) : path.join(ROOT, "style.css"));
 
+/* CSS e JS íntegros: sem marcas de conflito de merge e com chaves equilibradas no CSS */
+for (const a of ["style.css", "app.js"]) {
+  const t = fs.readFileSync(path.join(ROOT, a), "utf8");
+  if (/^(<{7}|={7}|>{7})( |$)/m.test(t)) falha(a, "marca de conflito de merge (<<<<<<< ======= >>>>>>>)");
+}
+{
+  const css = fs.readFileSync(path.join(ROOT, "style.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/"[^"]*"/g, "");
+  let nivel = 0, linha = 1;
+  for (const c of css) {
+    if (c === "\n") linha++;
+    if (c === "{") nivel++;
+    if (c === "}" && --nivel < 0) { falha("style.css", `chave } sobrando perto da linha ${linha}`); nivel = 0; }
+  }
+  if (nivel > 0) falha("style.css", `${nivel} chave(s) { sem fechar (uma @media aberta engole as regras seguintes)`);
+}
+
 /* Páginas */
 const hashes = Object.fromEntries(ASSETS.map((a) => [a, hashDe(a)]));
 const paginas = listarHtml();
@@ -100,7 +116,8 @@ for (const arq of paginas) {
 
   // versões de CSS/JS
   for (const [a, h] of Object.entries(hashes)) {
-    const refs = [...html.matchAll(new RegExp(`${a.replace(".", "\\.")}(\\?v=([^"']*))?["']`, "g"))];
+    const semLd = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, "");
+    const refs = [...semLd.matchAll(new RegExp(`${a.replace(".", "\\.")}(\\?v=([^"']*))?["']`, "g"))];
     if (!refs.length) continue;
     for (const ref of refs) if (ref[2] !== h) falha(r, `${a}?v= ausente ou desatualizado (${ref[2] || "sem v"} ≠ ${h}). Rode: node scripts/versionar-assets.mjs`);
   }

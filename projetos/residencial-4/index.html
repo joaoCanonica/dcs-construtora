@@ -24,8 +24,8 @@
   <link rel="icon" type="image/png" href="../../assets/favicon.png">
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
   <link rel="preload" href="../../assets/archivo-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../style.css?v=7f10a066">
-  <script src="../../app.js?v=123263a7" defer></script>
+  <link rel="stylesheet" href="../../style.css?v=dbbcf68b">
+  <script src="../../app.js?v=625939c6" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -61,6 +61,12 @@
         "inLanguage": "pt-BR",
         "creator": {
           "@id": "https://dcs-construtora.vercel.app/#organizacao"
+        },
+        "associatedMedia": {
+          "@type": "3DModel",
+          "name": "Maquete volumétrica ilustrativa do Residencial 04",
+          "encodingFormat": "model/gltf-binary",
+          "contentUrl": "https://dcs-construtora.vercel.app/assets/3d/residencial-04.glb"
         }
       },
       {
@@ -160,6 +166,24 @@
           <h3>Programa</h3>
           <ul><li>1 suíte e 2 quartos</li><li>Escritório</li><li>Banheiro social</li><li>Estar e cozinha integrados</li><li>Área de serviço interna</li><li>Garagem coberta</li><li>Área externa com fechamento em muro</li></ul>
         </div>
+      </div>
+    </section>
+
+    <section class="section maquete" style="padding-top:0" aria-labelledby="maquete-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="maquete-title">A casa em 3D</h2>
+          <p>Gire a maquete para ver a casa por todos os lados.</p>
+        </div>
+        <div class="maquete__stage" data-maquete data-src="../../assets/3d/residencial-04.glb?v=15dbf8c5" data-env="../../assets/3d/estudio.png?v=7e1452c4" data-viewer="../../assets/3d/model-viewer.min.js?v=81242660">
+          <img class="maquete__poster" src="../../assets/residencial4.webp" alt="Residencial 04, fachada da casa térrea com escritório e garagem coberta" width="821" height="800" loading="lazy" decoding="async">
+          <div class="maquete__cta">
+            <button class="btn btn--light" type="button" data-maquete-abrir>Explorar em 3D <small class="maquete__peso">(1,0 MB)</small></button>
+            <p class="maquete__aviso" hidden>Você está em modo de economia de dados. A maquete tem cerca de 1,0 MB.</p>
+          </div>
+          <p class="maquete__status" aria-live="polite"></p>
+        </div>
+        <p class="maquete__legenda">Maquete volumétrica ilustrativa do Residencial 04. <span class="maquete__dica" hidden>Arraste para girar.</span></p>
       </div>
     </section>
 

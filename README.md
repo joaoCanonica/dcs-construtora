@@ -50,6 +50,10 @@ Para testar layout e interação no navegador (mapa, carrossel, alvos de toque, 
 - **Imagens** têm cache de 1 dia. Para trocar uma foto com efeito imediato, use um nome de arquivo novo.
 - **Novo projeto ou página:** depois de criar, rode `node scripts/gerar-sitemap.mjs` e `node scripts/check-site.mjs`.
 
+## Maquete 3D (Residencial 04)
+
+`assets/3d/residencial-04.glb` e `assets/3d/estudio.png` são gerados por `node scripts/gerar-maquete.mjs` e otimizados com `npx @gltf-transform/cli optimize assets/3d/residencial-04-bruto.glb assets/3d/residencial-04.glb --texture-compress webp --texture-size 512` (depois apague o `-bruto.glb`). O visualizador (`assets/3d/model-viewer.min.js`, @google/model-viewer 4.1.0) e o modelo só carregam quando o visitante clica em "Explorar em 3D". Para usar o modelo original do projeto, exporte em GLB, salve no mesmo caminho e rode `node scripts/versionar-assets.mjs`.
+
 ## Ao definir o domínio
 
 1. `node scripts/definir-dominio.mjs https://www.dominio-final.com.br` troca a origem em `canonical`, `og:*`, `twitter:*`, JSON-LD, `sitemap.xml`, `robots.txt` e `llms.txt` (links internos continuam relativos).
