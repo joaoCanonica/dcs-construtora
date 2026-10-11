@@ -1857,6 +1857,9 @@ p {
 }
 
 .map iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   border: 0;
@@ -2431,6 +2434,92 @@ p {
 @media (max-width: 640px) {
   .maquete__stage {
     aspect-ratio: 4 / 4.3;
+  }
+}
+
+/* Correções: mapa, alvos de toque, horário e setas do carrossel
+   ========================================================================== */
+
+/* O .map é filho de .contact-info, mas não é uma linha "ícone + texto" */
+.contact-info > .map {
+  display: block;
+  gap: 0;
+  grid-template-columns: none;
+  padding: 0;
+  border-bottom: 0;
+}
+
+/* Área de toque de 44 px sem mudar o visual (pseudo-elemento invisível) */
+.link,
+.contact-info p a,
+.slideshow__caption {
+  position: relative;
+}
+
+.link::after,
+.contact-info p a::after,
+.slideshow__caption::after {
+  content: "";
+  position: absolute;
+  inset: -11px -4px;
+}
+
+.contact-info p a {
+  display: inline-block;
+}
+
+/* Horário: cada intervalo inteiro na mesma linha; no celular, empilhados */
+@media (max-width: 640px) {
+  .hours dd .nowrap {
+    display: block;
+  }
+
+  .hours__sep {
+    display: none;
+  }
+}
+
+/* Setas do carrossel */
+.slideshow__frame {
+  touch-action: pan-y;
+}
+
+.slideshow__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(16, 21, 47, 0.45);
+  color: var(--white);
+  font-size: 18px;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.slideshow__arrow:hover,
+.slideshow__arrow:focus-visible {
+  background: rgba(16, 21, 47, 0.75);
+  border-color: var(--white);
+}
+
+.slideshow__arrow--prev {
+  left: 12px;
+}
+
+.slideshow__arrow--next {
+  right: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: none !important;
   }
 }
 
