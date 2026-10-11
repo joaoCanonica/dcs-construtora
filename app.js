@@ -101,6 +101,14 @@
     revealEls.forEach(function (el) {
       observer.observe(el);
     });
+    // failsafe: 4 s depois do load, tudo que ainda não apareceu aparece
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        revealEls.forEach(function (el) {
+          el.classList.add("is-visible");
+        });
+      }, 4000);
+    });
   }
 
   /* Slideshow do topo */
@@ -130,7 +138,7 @@
     };
 
     var play = function () {
-      if (reducedMotion) return;
+      if (userPaused) return;
       clearInterval(timer);
       timer = setInterval(function () {
         show(current + 1);
@@ -143,24 +151,49 @@
       slideshow.classList.add("is-paused");
     };
 
+    // botão Pausar/Reproduzir (WCAG 2.2.2); pausa manual vale até o visitante reproduzir de novo
+    var userPaused = reducedMotion;
+    var ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+    var ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>';
+    var toggleBtn = document.createElement("button");
+    toggleBtn.type = "button";
+    toggleBtn.className = "slideshow__toggle";
+    var syncToggle = function () {
+      toggleBtn.innerHTML = userPaused ? ICON_PLAY : ICON_PAUSE;
+      toggleBtn.setAttribute("aria-label", userPaused ? "Reproduzir carrossel" : "Pausar carrossel");
+    };
+    syncToggle();
+    slideshow.querySelector(".slideshow__frame").appendChild(toggleBtn);
+    toggleBtn.addEventListener("click", function () {
+      userPaused = !userPaused;
+      syncToggle();
+      if (userPaused) pause();
+      else play();
+    });
+    var resume = function () {
+      if (!userPaused) play();
+    };
+
     dots.forEach(function (dot, i) {
       dot.addEventListener("click", function () {
         show(i);
-        play();
+        resume();
       });
     });
 
     slideshow.addEventListener("mouseenter", pause);
-    slideshow.addEventListener("mouseleave", play);
+    slideshow.addEventListener("mouseleave", resume);
     slideshow.addEventListener("focusin", pause);
-    slideshow.addEventListener("focusout", play);
+    slideshow.addEventListener("focusout", function (e) {
+      if (!slideshow.contains(e.relatedTarget)) resume();
+    });
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) pause();
-      else play();
+      else resume();
     });
 
     if (reducedMotion) slideshow.classList.add("is-paused");
-    play();
+    resume();
   }
 
   /* Filtros do portfólio */

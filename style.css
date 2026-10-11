@@ -2,6 +2,13 @@
    DCS Construtora e Incorporadora — folha de estilos
    ========================================================================== */
 
+/* Títulos: Archivo variável (OFL, assets/archivo-OFL.txt). Fonte nova sempre com nome de arquivo novo. */
+@font-face {
+  font-family: "Archivo";
+  src: url("assets/archivo-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-400-normal.woff2") format("woff2");
@@ -27,15 +34,19 @@
   --navy-soft: #232a52;
   --ink: #161a2e;
   --text: #4c5264;
-  --muted: #7a7f8c;
+  --muted: #5f6475;
   --blue: #00a3e0;
-  --blue-dark: #0679a8;
+  --blue-dark: #056d99;
   --steel: #9b9da0;
+  --steel-text: #6a7080;
   --paper: #f6f5f1;
   --paper-2: #ecebe5;
   --line: #dddcd5;
   --line-dark: rgba(255, 255, 255, 0.14);
   --white: #ffffff;
+
+  /* Fonte dos títulos: troque aqui em uma linha */
+  --font-display: "Archivo", "Manrope", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
   --container: 1360px;
   --pad: clamp(20px, 5vw, 72px);
@@ -124,9 +135,10 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   line-height: 1.08;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
   color: inherit;
 }
 
@@ -140,7 +152,7 @@ h2 {
 
 h3 {
   font-size: clamp(22px, 1.9vw, 28px);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
@@ -763,11 +775,12 @@ p {
 
 .statement h2 {
   font-size: clamp(32px, 3.9vw, 58px);
+  font-weight: 500;
   line-height: 1.12;
 }
 
 .statement h2 span {
-  color: var(--steel);
+  color: var(--steel-text);
 }
 
 .statement__aside p {
@@ -1902,9 +1915,10 @@ p {
   display: block;
   color: var(--blue);
   font-size: clamp(80px, 14vw, 180px);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.02em;
 }
 
 .not-found h1 {
@@ -2245,6 +2259,74 @@ p {
     opacity: 1;
     transform: none;
   }
+}
+
+/* Refino: marcadores, alvos de toque, carrossel, horários
+   ========================================================================== */
+
+/* Traço fino azul no lugar da numeração (faixa de serviços, cartões e "Por que a DCS") */
+.service-strip .mark,
+.service-card__num:empty,
+.values .mark {
+  display: block;
+  flex: none;
+  width: 28px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.service-card__num:empty,
+.values .mark {
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
+
+/* Área de toque de 44 px sem mudar o visual */
+.site-footer li a,
+.site-footer__bottom nav a,
+.breadcrumb a {
+  display: inline-block;
+  padding-block: 11px;
+  margin-block: -11px;
+}
+
+.slideshow__dots button {
+  height: 44px;
+  margin-block: -10px;
+}
+
+.slideshow__toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(16, 21, 47, 0.55);
+  color: var(--white);
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.slideshow__toggle:hover,
+.slideshow__toggle:focus-visible {
+  opacity: 1;
+}
+
+.slideshow__toggle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 @media print {

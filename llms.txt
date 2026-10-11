@@ -1,0 +1,36 @@
+# DCS Construtora e Incorporadora
+
+> Construtora e incorporadora em Lages, SC. Projetos de engenharia, execução e gerenciamento de obras em Lages e região.
+
+A DCS atua em quatro frentes:
+
+- Projetos de engenharia: arquitetônico, estrutural, elétrico e hidrossanitário, de acordo com o escopo de cada contratação.
+- Execução e gerenciamento: obras residenciais, comerciais e industriais, com acompanhamento técnico em cada etapa.
+- Regularização de imóveis: análise da situação do imóvel e dos projetos e documentos exigidos pelos órgãos competentes.
+- Documentação para financiamento: memoriais, cronogramas e documentos técnicos para a análise do banco.
+
+Também oferece construção chave na mão: projetos, aprovações, documentação para financiamento, materiais, execução e acabamentos reunidos em um único contrato, com escopo definido com o cliente.
+
+## Contato
+
+- Cidade: Lages, SC
+- Escritório: Rua Humberto de Campos, 213, Sala 04, Sagrado Coração de Jesus, Lages, SC
+- WhatsApp e telefone: (49) 99127-7677
+- Horário: segunda a sexta, das 8h30 às 12h e das 13h30 às 18h
+- Instagram: https://www.instagram.com/dcs_construtora/
+
+## Páginas
+
+- [Início](https://dcs-construtora.vercel.app/): serviços, projetos em destaque e as cinco etapas de trabalho.
+- [Projetos](https://dcs-construtora.vercel.app/projetos/): portfólio com os sete projetos residenciais.
+- [Residencial 01](https://dcs-construtora.vercel.app/projetos/residencial-1/): sobrado de 182 m² com área gourmet e varanda; projeto estrutural da DCS.
+- [Residencial 02](https://dcs-construtora.vercel.app/projetos/residencial-2/): duas casas de 58 m² em obra própria; projeto e execução da DCS.
+- [Residencial 03](https://dcs-construtora.vercel.app/projetos/residencial-3/): casa entregue no Loteamento Verdes Campos, em Lages; execução de obra da DCS.
+- [Residencial 04](https://dcs-construtora.vercel.app/projetos/residencial-4/): casa térrea de 145 m² com escritório e garagem coberta; projeto e execução da DCS.
+- [Residencial 05](https://dcs-construtora.vercel.app/projetos/residencial-5/): sobrado de 190 m² com garagem para dois carros; projetos estrutural, elétrico e hidrossanitário da DCS.
+- [Residencial 06](https://dcs-construtora.vercel.app/projetos/residencial-6/): casa de 53 m² sobre pilotis; projetos completos e documentação para financiamento da DCS.
+- [Residencial 07](https://dcs-construtora.vercel.app/projetos/residencial-7/): casa térrea de 165 m² com pé-direito elevado no estar; projetos de engenharia da DCS.
+- [Como construímos](https://dcs-construtora.vercel.app/como-construimos/): as cinco etapas, construção chave na mão, serviços e perguntas frequentes.
+- [A DCS](https://dcs-construtora.vercel.app/a-dcs/): apresentação da empresa e do escritório.
+- [Contato](https://dcs-construtora.vercel.app/contato/): formulário que abre o WhatsApp, endereço, horário e mapa.
+- [Privacidade](https://dcs-construtora.vercel.app/privacidade/): política de privacidade (LGPD).
